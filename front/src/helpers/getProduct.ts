@@ -1,12 +1,12 @@
 
-import { IClothe } from "@/interfacecs/IProduct";
+import { IProduct } from "@/interfacecs/IProduct";
 import axios from "axios"
 
 
-export const getClothes =async():Promise<IClothe[]>=>{
+export const getProducts =async():Promise<IProduct[]>=>{
    
     try {
-        const response=await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/clothes`)
+        const response=await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`)
         if(!response.data){
             throw new Error("not products found")
         }

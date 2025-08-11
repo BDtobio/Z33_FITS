@@ -2,7 +2,7 @@
 // pages/clothes/page.tsx
 import { useEffect, useState } from "react";
 import { IProduct } from "@/interfacecs/IProduct";
-import { getClothes } from "@/helpers/getClothes"; // Asegúrate de que la ruta sea correcta
+import { getClothes } from "@/helpers/getProduct"; // Asegúrate de que la ruta sea correcta
 import Image from "next/image";
 
 const ClothesPage = () => {
