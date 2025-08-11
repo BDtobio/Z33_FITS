@@ -1,22 +1,37 @@
 "use client";
+
 import Link from "next/link";
 import Head from "next/head";
 import { useState } from "react";
-import { FaTshirt, FaHatCowboy, FaShoppingBag, FaBaseballBall } from "react-icons/fa"; 
+import { 
+  FaTshirt, 
+  FaHatCowboy, 
+  FaShoppingBag, 
+  FaBaseballBall,
+  FaUserCircle
+} from "react-icons/fa";
+
+import { MdBackpack } from "react-icons/md";
+
 import Image from "next/image";
-const categoryIcons = [
-  { id: 1, name: "Remeras", icon: <FaTshirt size={40} /> },
-  { id: 2, name: "Chombas", icon: <FaHatCowboy size={40} /> },
-  { id: 3, name: "Pantalones", icon: <FaShoppingBag size={40} /> },  
-  { id: 4, name: "Accesorios", icon: <FaShoppingBag size={40} /> },
-  { id: 5, name: "Gorras", icon: <FaBaseballBall size={40} /> },
+const categories = [
+  { id: 1, name: "Zapatillas", icon: <FaBaseballBall size={40} /> },  // O reemplaza con el icono que prefieras
+  { id: 2, name: "Remeras", icon: <FaTshirt size={40} /> },
+  { id: 3, name: "Chombas", icon: <FaHatCowboy size={40} /> },
+  { id: 4, name: "Pantalones largos", icon: <FaShoppingBag size={40} /> },
+  { id: 5, name: "Pantalones cortos", icon: <FaShoppingBag size={40} /> },
+  { id: 6, name: "Shorts jean", icon: <MdBackpack size={40} /> },
+  { id: 7, name: "Shorts deportivos", icon: <FaBaseballBall size={40} /> },
+  { id: 8, name: "Gorras", icon: <FaHatCowboy size={40} /> },
+  { id: 9, name: "Cadenas", icon: <FaUserCircle size={40} /> },
+  { id: 10, name: "Mochilas", icon: <MdBackpack size={40} /> },
 ];
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const slide = (direction: number) => {
-    setCurrentIndex((prevIndex) => (prevIndex + direction + categoryIcons.length) % categoryIcons.length);
+    setCurrentIndex((prevIndex) => (prevIndex + direction + categories.length) % categories.length);
   };
 
   const goToSlide = (index: number) => {
@@ -30,18 +45,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      {/* Sección de imagen principal */}
+      {/* Imagen principal */}
       <main className="relative w-full h-[70vh] flex items-center justify-center">
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
+          autoPlay muted loop
         >
           <source src="/videos/video1.mp4" type="video/mp4" />
           Tu navegador no soporta la etiqueta de video.
         </video>
-
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative flex items-center justify-center">
           <h1 className="text-white text-8xl font-bold">Z33</h1>
@@ -71,11 +83,15 @@ export default function Home() {
               className="flex transition-transform duration-300 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              {categoryIcons.map((category) => (
-                <div key={category.id} className="min-w-full flex flex-col items-center">
+              {categories.map((category) => (
+                <Link 
+                  key={category.id} 
+                  href={`/categoria/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="min-w-full flex flex-col items-center cursor-pointer"
+                >
                   <div className="mb-4">{category.icon}</div>
                   <h3 className="text-xl text-gray-800">{category.name}</h3>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -89,7 +105,7 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center mt-4 space-x-2">
-          {categoryIcons.map((_, index) => (
+          {categories.map((_, index) => (
             <span
               key={index}
               onClick={() => goToSlide(index)}
@@ -101,32 +117,32 @@ export default function Home() {
         </div>
       </div>
 
-      
+      {/* Sección de imágenes grandes para algunas categorías, igual que tu diseño */}
       <div className="mt-0 px-0 w-screen min-h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-px">
-  {[
-    { href: "/categoria/remeras", src: "/images/modelos/modelos2.png", alt: "Remeras" },
-    { href: "/categoria/pantalones", src: "/images/modelos/modelos1.png", alt: "Pantalones" },
-    { href: "/categoria/accesorios", src: "/images/modelos/modelos4.png", alt: "Accesorios" },
-    { href: "/categoria/gorras", src: "/images/modelos/modelos6.png", alt: "Gorras" }
-  ].map(({ href, src, alt }) => (
-    <Link key={href} href={href} className="relative flex">
-    <Image
-  src={src}
-  alt={alt}
-  width={1920}       // ancho deseado en px (ajustalo según tu layout)
-  height={1080}      // alto deseado en px (ajustalo según tu layout)
-  className="w-full h-[60vh] md:h-[60vh] lg:h-[90] object-cover transition-all duration-300"
-/>
-      <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-        bg-white text-red-600 font-bold py-2 px-4 rounded transition-all duration-300 
-        hover:bg-red-600 hover:text-white hover:scale-110">
-        Ver
-      </button>
-    </Link>
-  ))}
-</div>
+        {[
+          { href: "/categoria/remeras", src: "/images/modelos/modelos2.png", alt: "Remeras" },
+          { href: "/categoria/pantalones-largos", src: "/images/modelos/modelos1.png", alt: "Pantalones largos" },
+          { href: "/categoria/accesorios", src: "/images/modelos/modelos4.png", alt: "Accesorios" },
+          { href: "/categoria/gorras", src: "/images/modelos/modelos6.png", alt: "Gorras" }
+        ].map(({ href, src, alt }) => (
+          <Link key={href} href={href} className="relative flex">
+            <Image
+              src={src}
+              alt={alt}
+              width={1920}
+              height={1080}
+              className="w-full h-[60vh] md:h-[60vh] lg:h-[90] object-cover transition-all duration-300"
+            />
+            <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+              bg-white text-red-600 font-bold py-2 px-4 rounded transition-all duration-300 
+              hover:bg-red-600 hover:text-white hover:scale-110">
+              Ver
+            </button>
+          </Link>
+        ))}
+      </div>
 
-      {/* Sección de "Latest Drops" */}
+      {/* Últimos Drops */}
       <div className="bg-black text-center h-[200px] flex flex-col items-center justify-center">
         <h2 className="text-3xl font-bold text-white">LASTEST DROPS</h2>
         <Link href="/drops">
@@ -136,14 +152,13 @@ export default function Home() {
         </Link>
       </div>
 
+      {/* Video final */}
       <section className="video-section py-0 bg-black w-full">
         <div className="w-full px-0 text-center bg-black md:mb-10">
           <div className="video-container relative w-full h-[45vh]">
             <video
               className="w-full h-full object-cover shadow-lg md:max-w-screen-md md:mx-auto"
-              autoPlay
-              muted
-              loop
+              autoPlay muted loop
             >
               <source src="videos/video2.mp4" type="video/mp4" />
               Tu navegador no soporta la etiqueta de video.
