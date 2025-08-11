@@ -33,16 +33,18 @@ const Contact = () => {
 
       <div className="mb-8 w-full"> {/* Aseguramos que ocupe todo el ancho */}
         <h2 className="text-xl font-semibold mb-4 text-red-600">Punto de Encuentro</h2> {/* Título rojo */}
-        <div className="h-64 w-full bg-gray-800 rounded-lg overflow-hidden">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2598.204128545188!2d-65.204223764111!3d-26.825586781757018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225c10b319b1a9%3A0x9b2ac535ac6b6d4d!2sMcDonald&#39;s!5e0!3m2!1ses!2sar!4v1741147920261!5m2!1ses!2sar"
-            width="100%" height="450"
-            style={{ border: '0' }} // Cambié el valor a un objeto de estilo
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
+       <div className="h-64 w-full bg-gray-800 rounded-lg overflow-hidden">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2598.204128545188!2d-65.204223764111!3d-26.825586781757018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225c10b319b1a9%3A0x9b2ac535ac6b6d4d!2sMcDonald&#39;s!5e0!3m2!1ses!2sar!4v1741147920261!5m2!1ses!2sar"
+    width="100%"
+    height="450"
+    style={{ border: '0' }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+  />
+</div>
+
       </div>
 
       {/* Formulario de contacto */}
