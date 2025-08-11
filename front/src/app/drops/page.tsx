@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IClothe } from '@/interfacecs/IClothe';
+import { IProduct } from '@/interfacecs/IProduct';
+import Image from 'next/image';
 
 // Definir las categorías, ahora solo usaremos sus nombres
 const categories = [
@@ -17,7 +18,7 @@ const categories = [
 
 const DropsSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Remeras');
-  const [clothes, setClothes] = useState<IClothe[]>([]); 
+  const [clothes, setClothes] = useState<IProduct[]>([]); 
 
   
   useEffect(() => {
@@ -43,7 +44,13 @@ const DropsSection: React.FC = () => {
             onClick={() => setSelectedCategory(category.name)}
             className="cursor-pointer text-center hover:scale-105 transition-transform"
           >
-            <img src={category.icon} alt={category.name} className="w-20 h-20 mb-2" />
+           <Image
+  src={category.icon}
+  alt={category.name}
+  width={80}   // 20 * 4 (para que mantenga proporción con w-20)
+  height={80}  // 20 * 4
+  className="mb-2"
+/>
             <p className="text-lg font-semibold">{category.name}</p>
           </div>
         ))}
@@ -55,11 +62,13 @@ const DropsSection: React.FC = () => {
         {clothes.length > 0 ? (
           clothes.map((clothe) => (
             <div key={clothe.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all border-l-4 border-red-600">
-              <img
-                src={clothe.image}
-                alt={clothe.category}
-                className="w-full h-60 object-cover rounded-md mb-4"
-              />
+     <Image
+  src={clothe.image_url}
+  alt={clothe.category.name}  // <-- Aquí usamos el nombre, que es string
+  width={400}
+  height={240}
+  className="rounded-md mb-4 object-cover"
+/>
               
               <p className="text-gray-500 mt-2">{clothe.description}</p>
             </div>

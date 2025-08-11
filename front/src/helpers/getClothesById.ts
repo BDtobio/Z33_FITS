@@ -1,4 +1,4 @@
-import { IClothe } from "@/interfacecs/IClothe";
+import { IClothe } from "@/interfacecs/IProduct";
 import { getClothes } from "./getClothes";
 
 export const getProductById = async (id: number): Promise<IClothe> => {

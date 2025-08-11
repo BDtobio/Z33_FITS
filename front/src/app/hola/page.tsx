@@ -1,13 +1,13 @@
 "use client"
 // pages/clothes/page.tsx
 import { useEffect, useState } from "react";
-import { IClothe } from "@/interfacecs/IClothe";
+import { IProduct } from "@/interfacecs/IProduct";
 import { getClothes } from "@/helpers/getClothes"; // Asegúrate de que la ruta sea correcta
 import Image from "next/image";
 
 const ClothesPage = () => {
   // Estado para almacenar los productos
-  const [clothes, setClothes] = useState<IClothe[]>([]);
+  const [clothes, setClothes] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,7 +18,8 @@ const ClothesPage = () => {
         const products = await getClothes(); // Llama a la función que has creado
         setClothes(products);
       } catch (error) {
-        setError("No se pudieron cargar los productos.");
+  console.error(error);  // <-- usa la variable para que no sea “sin uso”
+  setError("No se pudieron cargar los productos.");
       } finally {
         setLoading(false);
       }
@@ -46,7 +47,7 @@ const ClothesPage = () => {
           clothes.map((clothe) => (
             <div key={clothe.id} className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
             <Image
-  src={clothe.image}
+  src={clothe.image_url}
   alt={clothe.name}
   width={400}      // ancho deseado en px
   height={192}     // alto deseado en px (proporcional a 48*4)

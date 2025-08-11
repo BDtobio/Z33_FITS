@@ -1,5 +1,5 @@
 
-import { IClothe } from "@/interfacecs/IClothe";
+import { IClothe } from "@/interfacecs/IProduct";
 import axios from "axios"
 
 

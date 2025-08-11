@@ -1,6 +1,6 @@
 export interface ICategory {
-    id: number;           // 
-    nombre: string;   
-    icono: string;   
-  }
-  
+  id: string;
+  name: string;
+  // Si querés incluir productos relacionados, usá:
+  // products?: IClothe[];
+}
