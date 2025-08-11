@@ -3,6 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { useState } from "react";
 import { FaTshirt, FaHatCowboy, FaShoppingBag, FaBaseballBall } from "react-icons/fa"; 
+import Image from "next/image";
 const categoryIcons = [
   { id: 1, name: "Remeras", icon: <FaTshirt size={40} /> },
   { id: 2, name: "Chombas", icon: <FaHatCowboy size={40} /> },
@@ -100,7 +101,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Sección de fotos */}
+      
       <div className="mt-0 px-0 w-screen min-h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-px">
   {[
     { href: "/categoria/remeras", src: "/images/modelos/modelos2.png", alt: "Remeras" },
@@ -109,7 +110,13 @@ export default function Home() {
     { href: "/categoria/gorras", src: "/images/modelos/modelos6.png", alt: "Gorras" }
   ].map(({ href, src, alt }) => (
     <Link key={href} href={href} className="relative flex">
-      <img src={src} alt={alt} className="w-full h-[60vh] md:h-[60vh] lg:h-[90] object-cover transition-all duration-300" />
+    <Image
+  src={src}
+  alt={alt}
+  width={1920}       // ancho deseado en px (ajustalo según tu layout)
+  height={1080}      // alto deseado en px (ajustalo según tu layout)
+  className="w-full h-[60vh] md:h-[60vh] lg:h-[90] object-cover transition-all duration-300"
+/>
       <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
         bg-white text-red-600 font-bold py-2 px-4 rounded transition-all duration-300 
         hover:bg-red-600 hover:text-white hover:scale-110">

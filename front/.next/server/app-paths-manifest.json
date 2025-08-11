@@ -1,10 +1,1 @@
-{
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js",
-  "/home/page": "app/home/page.js",
-  "/drops/page": "app/drops/page.js",
-  "/hola/page": "app/hola/page.js",
-  "/infoPay/page": "app/infoPay/page.js",
-  "/contact/page": "app/contact/page.js"
-}
+{}
