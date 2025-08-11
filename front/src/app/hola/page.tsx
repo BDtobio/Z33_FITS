@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { IClothe } from "@/interfacecs/IClothe";
 import { getClothes } from "@/helpers/getClothes"; // Asegúrate de que la ruta sea correcta
+import Image from "next/image";
 
 const ClothesPage = () => {
   // Estado para almacenar los productos
@@ -44,7 +45,13 @@ const ClothesPage = () => {
         {clothes.length > 0 ? (
           clothes.map((clothe) => (
             <div key={clothe.id} className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-              <img src={clothe.image} alt={clothe.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+            <Image
+  src={clothe.image}
+  alt={clothe.name}
+  width={400}      // ancho deseado en px
+  height={192}     // alto deseado en px (proporcional a 48*4)
+  className="rounded-lg mb-4 object-cover w-full"
+/>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">{clothe.name}</h3>
               <p className="text-sm text-gray-600 mb-2">{clothe.description}</p>
               <p className="text-lg font-semibold text-gray-900 mb-2">Precio: ${clothe.price}</p>
