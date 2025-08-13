@@ -1,66 +1,67 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation"; // Hook de Next.js para obtener el slug/id
-import { IProduct } from "../../interfaces/IProduct";
+import { useParams } from "next/navigation";
+import { IProduct } from "@/interfaces/IProduct";
+import { getProductById } from "@/helpers/getProductById";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function ProductPage() {
-  const params = useParams(); 
+  const { id } = useParams();
+const productId = Array.isArray(id) ? id[0] : id;
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+useEffect(() => {
+  if (!productId) return; // Si no hay ID, no hacemos fetch
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/products/${params.id}`);
-        if (!res.ok) throw new Error("Error al obtener producto");
-        const data: IProduct = await res.json();
-        setProduct(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduct();
-  }, [params.id]);
+  const fetchProduct = async () => {
+    try {
+      const data = await getProductById(productId); // ahora TS sabe que es string
+      setProduct(data);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Error desconocido";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) return <div className="text-center mt-10">Cargando...</div>;
-  if (!product) return <div className="text-center mt-10">Producto no encontrado</div>;
+  fetchProduct();
+}, [productId]);
+
+  if (loading) return <p className="text-center mt-10">Cargando...</p>;
+  if (error) return <p className="text-center mt-10 text-red-600">{error}</p>;
+  if (!product) return <p className="text-center mt-10">Producto no encontrado</p>;
 
   return (
-    <div className="min-h-screen p-6 bg-gray-100 flex flex-col md:flex-row gap-6">
-      {/* Imagen */}
-      <div className="flex-1 relative w-full h-96 md:h-auto">
-        <Image
-          src={product.image_url}
-          alt={product.name}
-          layout="fill"
-          objectFit="contain"
-          className="rounded-lg shadow-lg"
-        />
-      </div>
+    <div className="p-4 max-w-5xl mx-auto">
+      <Link href={`/categoria/${product.category.name.toLowerCase()}`} className="text-blue-600 underline mb-4 inline-block">
+        ← Volver a {product.category.name}
+      </Link>
 
-      {/* Información */}
-      <div className="flex-1 flex flex-col gap-4">
-        <h1 className="text-3xl font-bold">{product.name}</h1>
-        <p className="text-gray-700">{product.description}</p>
-        <p className="text-red-600 font-bold text-2xl">${product.price}</p>
-        <p className="text-gray-500">
-          Stock: {product.stock} | Categoría: {product.category.name} | Género: {product.gender.name}
-        </p>
-
-        <button className="mt-4 px-6 py-3 bg-red-700 text-white font-semibold rounded-md hover:bg-red-900 transition">
-          Agregar al carrito
-        </button>
-
-        <Link href={`/categoria/${product.category.name.toLowerCase().replace(/\s+/g, '-')}`}>
-          <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
-            Volver a {product.category.name}
+      <div className="flex flex-col md:flex-row gap-6 mt-4">
+        <div className="w-full md:w-1/2">
+          <Image
+            src={product.image_url}
+            alt={product.name}
+            width={500}
+            height={500}
+            className="w-full h-auto object-cover rounded"
+          />
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col justify-start">
+          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+          <p className="text-gray-600 mb-4">{product.description}</p>
+          <p className="text-red-600 text-2xl font-bold mb-4">${product.price}</p>
+          <p className="text-sm text-gray-500 mb-4">
+            Stock: {product.stock} | Género: {product.gender.name}
+          </p>
+          <button className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 transition">
+            Agregar al carrito
           </button>
-        </Link>
+        </div>
       </div>
     </div>
   );

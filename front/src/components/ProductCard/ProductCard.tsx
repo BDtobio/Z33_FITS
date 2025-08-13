@@ -16,7 +16,7 @@ export default function RemerasGrid() {
           "/products",
           {
             params: {
-              category: "263073bc-1952-469f-ac15-9a0e77037fc5", // UUID de categoría "Remeras"
+              category: "263073bc-1952-469f-ac15-9a0e77037fc5", 
             },
           }
         );
