@@ -11,6 +11,13 @@ export const getAllProducts = async (): Promise<Product[]> => {
 export const getProductById = async (id: string): Promise<Product | null> => {
   return await productRepo.findOne({ where: { id }, relations: ['category', 'gender'] });
 };
+// service/products.ts
+export const getProductsByCategory = async (categoryId: string) => {
+  return await productRepo.find({
+    where: { category: { id: categoryId } }, // <-- Solo filtro por categoría
+    relations: ["category", "gender"],
+  });
+};
 
 export const createProduct = async (dto: CreateProductDto): Promise<Product> => {
   const product = productRepo.create(dto);

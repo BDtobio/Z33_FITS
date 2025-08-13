@@ -23,7 +23,16 @@ export const getProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error al obtener producto' });
   }
 };
-
+export const getProductsByCategoryController = async (req: Request, res: Response) => {
+  const { categoryId } = req.params; // lo tomamos desde la ruta
+  try {
+    const products = await productService.getProductsByCategory(categoryId);
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener productos por categoría" });
+  }
+};
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const newProduct = await productService.createProduct(req.body);
