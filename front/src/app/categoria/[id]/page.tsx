@@ -3,65 +3,73 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { IProduct } from "@/interfaces/IProduct";
-import { getProductById } from "@/helpers/getProductById";
+import axiosInstance from "../../../api/axiosInstance";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductPage() {
+export default function CategoryPage() {
   const { id } = useParams();
-const productId = Array.isArray(id) ? id[0] : id;
-  const [product, setProduct] = useState<IProduct | null>(null);
+  const categoryId = Array.isArray(id) ? id[0] : id;
+
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 useEffect(() => {
-  if (!productId) return; // Si no hay ID, no hacemos fetch
+  if (!categoryId) return;
 
-  const fetchProduct = async () => {
+  const fetchProducts = async () => {
     try {
-      const data = await getProductById(productId); // ahora TS sabe que es string
-      setProduct(data);
+      const res = await axiosInstance.get(`/products/category/${categoryId}`);
+      setProducts(res.data);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error desconocido";
-      setError(message);
+      // Validación segura del error
+      const errorMessage =
+        err instanceof Error ? err.message : "Error desconocido";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  fetchProduct();
-}, [productId]);
+  fetchProducts();
+}, [categoryId]);
+
 
   if (loading) return <p className="text-center mt-10">Cargando...</p>;
   if (error) return <p className="text-center mt-10 text-red-600">{error}</p>;
-  if (!product) return <p className="text-center mt-10">Producto no encontrado</p>;
+  if (products.length === 0) return <p className="text-center mt-10">No hay productos en esta categoría</p>;
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      <Link href={`/categoria/${product.category.name.toLowerCase()}`} className="text-blue-600 underline mb-4 inline-block">
-        ← Volver a {product.category.name}
+      <Link href="/categoria" className="text-blue-600 underline mb-4 inline-block">
+        ← Volver a Categorías
       </Link>
 
-      <div className="flex flex-col md:flex-row gap-6 mt-4">
-        <div className="w-full md:w-1/2">
-          <Image
-            src={product.image_url}
-            alt={product.name}
-            width={500}
-            height={500}
-            className="w-full h-auto object-cover rounded"
-          />
-        </div>
-        <div className="w-full md:w-1/2 flex flex-col justify-start">
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          <p className="text-gray-600 mb-4">{product.description}</p>
-          <p className="text-red-600 text-2xl font-bold mb-4">${product.price}</p>
-          <p className="text-sm text-gray-500 mb-4">
-            Stock: {product.stock} | Género: {product.gender.name}
-          </p>
-          <button className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 transition">
-            Agregar al carrito
-          </button>
-        </div>
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        {products[0]?.category.name || "Categoría"}
+      </h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white p-4 rounded shadow hover:scale-105 transition-all">
+            <Image
+              src={product.image_url}
+              alt={product.name}
+              width={300}
+              height={300}
+              className="w-full h-64 object-cover mb-4 rounded"
+            />
+            <h2 className="font-semibold text-lg">{product.name}</h2>
+            <p className="text-gray-600">{product.description}</p>
+            <p className="text-red-600 font-bold mt-2">${product.price}</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Stock: {product.stock} | Género: {product.gender.name}
+            </p>
+            <button className="bg-red-600 text-white px-4 py-2 mt-2 rounded hover:bg-red-700 transition">
+              Agregar al carrito
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
