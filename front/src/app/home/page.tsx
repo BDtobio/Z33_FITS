@@ -8,20 +8,17 @@ import {
   FaHatCowboy, 
   FaShoppingBag, 
   FaBaseballBall,
-
 } from "react-icons/fa";
-
 import { MdBackpack } from "react-icons/md";
-
 import Image from "next/image";
+
 const categories = [
-  { id: 1, name: "Zapatillas", icon: <FaBaseballBall size={40} /> },
-  { id: 2, name: "Remeras", icon: <FaTshirt size={40} /> },
-  { id: 3, name: "Chombas", icon: <FaHatCowboy size={40} /> },
-  { id: 4, name: "Pantalones ", icon: <FaShoppingBag size={40} /> },
-  { id: 5, name: "Shorts ", icon: <MdBackpack size={40} /> },
-  { id: 6, name: "accessórios", icon: <FaBaseballBall size={40} /> },
-  
+  { id: "1", name: "Zapatillas", icon: <FaBaseballBall size={40} /> },
+  { id: "2", name: "Remeras", icon: <FaTshirt size={40} /> },
+  { id: "3", name: "Chombas", icon: <FaHatCowboy size={40} /> },
+  { id: "4", name: "Pantalones", icon: <FaShoppingBag size={40} /> },
+  { id: "5", name: "Shorts", icon: <MdBackpack size={40} /> },
+  { id: "6", name: "Accesorios", icon: <FaBaseballBall size={40} /> },
 ];
 
 export default function Home() {
@@ -31,9 +28,7 @@ export default function Home() {
     setCurrentIndex((prevIndex) => (prevIndex + direction + categories.length) % categories.length);
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+  const goToSlide = (index: number) => setCurrentIndex(index);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,10 +39,7 @@ export default function Home() {
 
       {/* Imagen principal */}
       <main className="relative w-full h-[70vh] flex items-center justify-center">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay muted loop
-        >
+        <video className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop>
           <source src="/videos/video1.mp4" type="video/mp4" />
           Tu navegador no soporta la etiqueta de video.
         </video>
@@ -83,7 +75,7 @@ export default function Home() {
               {categories.map((category) => (
                 <Link 
                   key={category.id} 
-                  href={`/categoria/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`/categories/${category.id}`}
                   className="min-w-full flex flex-col items-center cursor-pointer"
                 >
                   <div className="mb-4">{category.icon}</div>
@@ -114,13 +106,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Sección de imágenes grandes para algunas categorías, igual que tu diseño */}
+      {/* Sección de imágenes grandes */}
       <div className="mt-0 px-0 w-screen min-h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-px">
         {[
-          { href: "/categoria/remeras", src: "/images/modelos/modelos2.png", alt: "Remeras" },
-          { href: "/categoria/pantalones-largos", src: "/images/modelos/modelos1.png", alt: "Pantalones largos" },
-          { href: "/categoria/accesorios", src: "/images/modelos/modelos4.png", alt: "Accesorios" },
-          { href: "/categoria/gorras", src: "/images/modelos/modelos6.png", alt: "Gorras" }
+          { href: "/categories/2", src: "/images/modelos/modelos2.png", alt: "Remeras" },
+          { href: "/categories/4", src: "/images/modelos/modelos1.png", alt: "Pantalones largos" },
+          { href: "/categories/6", src: "/images/modelos/modelos4.png", alt: "Accesorios" },
+          { href: "/categories/3", src: "/images/modelos/modelos6.png", alt: "Gorras" }
         ].map(({ href, src, alt }) => (
           <Link key={href} href={href} className="relative flex">
             <Image
