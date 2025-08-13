@@ -8,23 +8,20 @@ import {
   FaHatCowboy, 
   FaShoppingBag, 
   FaBaseballBall,
-  FaUserCircle
+
 } from "react-icons/fa";
 
 import { MdBackpack } from "react-icons/md";
 
 import Image from "next/image";
 const categories = [
-  { id: 1, name: "Zapatillas", icon: <FaBaseballBall size={40} /> },  // O reemplaza con el icono que prefieras
+  { id: 1, name: "Zapatillas", icon: <FaBaseballBall size={40} /> },
   { id: 2, name: "Remeras", icon: <FaTshirt size={40} /> },
   { id: 3, name: "Chombas", icon: <FaHatCowboy size={40} /> },
-  { id: 4, name: "Pantalones largos", icon: <FaShoppingBag size={40} /> },
-  { id: 5, name: "Pantalones cortos", icon: <FaShoppingBag size={40} /> },
-  { id: 6, name: "Shorts jean", icon: <MdBackpack size={40} /> },
-  { id: 7, name: "Shorts deportivos", icon: <FaBaseballBall size={40} /> },
-  { id: 8, name: "Gorras", icon: <FaHatCowboy size={40} /> },
-  { id: 9, name: "Cadenas", icon: <FaUserCircle size={40} /> },
-  { id: 10, name: "Mochilas", icon: <MdBackpack size={40} /> },
+  { id: 4, name: "Pantalones ", icon: <FaShoppingBag size={40} /> },
+  { id: 5, name: "Shorts ", icon: <MdBackpack size={40} /> },
+  { id: 6, name: "accessórios", icon: <FaBaseballBall size={40} /> },
+  
 ];
 
 export default function Home() {
