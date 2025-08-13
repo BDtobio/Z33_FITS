@@ -1,7 +1,7 @@
 "use client"
 // pages/clothes/page.tsx
 import { useEffect, useState } from "react";
-import { IProduct } from "@/interfacecs/IProduct";
+import { IProduct } from "@/interfaces/IProduct";
 import { getProducts } from "@/helpers/getProduct"; // Asegúrate de que la ruta sea correcta
 import Image from "next/image";
 

@@ -2,7 +2,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IProduct } from '@/interfacecs/IProduct';
+import { IProduct } from '@/interfaces/IProduct';
 import Image from 'next/image';
 
 // Definir las categorías, ahora solo usaremos sus nombres

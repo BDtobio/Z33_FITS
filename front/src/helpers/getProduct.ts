@@ -1,5 +1,5 @@
 
-import { IProduct } from "@/interfacecs/IProduct";
+import { IProduct } from "@/interfaces/IProduct";
 import axios from "axios"
 
 
