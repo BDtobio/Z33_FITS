@@ -18,13 +18,13 @@ export const findById = async (id: string): Promise<Product | null> => {
 };
 
 // NUEVA FUNCIÓN: buscar productos por categoría
-export const findByCategory = async (categoryId: string): Promise<Product[]> => {
-  return await productRepository.find({
-    where: { category: { id: categoryId } },
-    relations: ['category', 'gender'],
-    order: { created_at: 'DESC' },
-  });
-};
+// export const findByCategory = async (categoryId: string): Promise<Product[]> => {
+//   return await productRepository.find({
+//     where: { category: { id: categoryId } },
+//     relations: ['category', 'gender'],
+//     order: { created_at: 'DESC' },
+//   });
+// };
 
 export const createProduct = async (productData: Partial<Product>): Promise<Product> => {
   const product = productRepository.create(productData);

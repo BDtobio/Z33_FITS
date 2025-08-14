@@ -1,11 +1,12 @@
-// helpers/products.ts
+// helpers/productsCategory.ts
 import { IProduct } from "@/interfaces/IProduct";
-import axiosInstance from "../api/axiosInstance"; 
+import { getProducts } from "./getProducts"; // tu función que trae todos los productos
 
-export const getProductsByCategoryHelper = async (categoryId: string): Promise<IProduct[]> => {
+export const getProductsByCategory = async (categoryName: string): Promise<IProduct[]> => {
   try {
-    const res = await axiosInstance.get(`/products/category/${categoryId}`);
-    return res.data;
+    const allProducts = await getProducts(); // traemos todos los productos
+    // filtramos por categoría sin importar género
+    return allProducts.filter(product => product.category.name.toLowerCase() === categoryName.toLowerCase());
   } catch (error) {
     console.error("Error fetching products by category:", error);
     return [];

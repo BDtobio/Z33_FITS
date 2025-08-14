@@ -27,6 +27,6 @@ export const deleteProduct = async (id: string): Promise<boolean> => {
 };
 
 // NUEVO: Traer productos por categoría
-export const getProductsByCategory = async (categoryId: string): Promise<Product[]> => {
-  return await productRepository.findByCategory(categoryId);
-};
+// export const getProductsByCategory = async (categoryId: string): Promise<Product[]> => {
+//   return await productRepository.findByCategory(categoryId);
+// };

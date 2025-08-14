@@ -32,25 +32,25 @@ export const createProduct = async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Error al crear producto' });
   }
 };
-export const getProductsByCategory = async (req: Request, res: Response) => {
-  try {
-    const { categoryId } = req.params;
-    if (!categoryId) {
-      return res.status(400).json({ message: 'Category ID inválido' });
-    }
+// export const getProductsByCategory = async (req: Request, res: Response) => {
+//   try {
+//     const { categoryId } = req.params;
+//     if (!categoryId) {
+//       return res.status(400).json({ message: 'Category ID inválido' });
+//     }
 
-    const products = await productService.getProductsByCategory(categoryId);
+//     const products = await productService.getProductsByCategory(categoryId);
 
-    if (!products || products.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron productos para esta categoría' });
-    }
+//     if (!products || products.length === 0) {
+//       return res.status(404).json({ message: 'No se encontraron productos para esta categoría' });
+//     }
 
-    res.status(200).json(products);
-  } catch (error) {
-    console.error('Error al obtener productos por categoría:', error);
-    res.status(500).json({ message: 'Error al obtener productos por categoría' });
-  }
-};
+//     res.status(200).json(products);
+//   } catch (error) {
+//     console.error('Error al obtener productos por categoría:', error);
+//     res.status(500).json({ message: 'Error al obtener productos por categoría' });
+//   }
+// };
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

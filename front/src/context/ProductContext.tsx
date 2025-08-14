@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { IProduct } from "@/interfaces/IProduct";
-import { getProducts } from "../helpers/getProduct";
+import { getProducts } from "../helpers/getProducts";
 
 interface ProductContextProps {
   products: IProduct[];

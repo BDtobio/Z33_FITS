@@ -5,7 +5,8 @@ import { useParams } from "next/navigation";
 import { IProduct } from "../../../interfaces/IProduct";
 
 import Image from "next/image";
-import { getProductsByCategoryHelper } from "@/helpers/getProductCategory";
+
+import { getProductsByCategory } from "@/helpers/getProductCategory";
 
 const CategoryPage = () => {
   const params = useParams();
@@ -18,8 +19,9 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
 useEffect(() => {
   if (!categoryId) return;
+
   const fetchProducts = async () => {
-    const data = await getProductsByCategoryHelper(categoryId);
+    const data = await getProductsByCategory(categoryId); // ahora sí recibe categoryId
     setProducts(data);
     setLoading(false);
   };
