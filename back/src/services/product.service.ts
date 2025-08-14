@@ -1,37 +1,32 @@
-import { AppDataSource } from '../config/dataSource';
+import * as productRepository from '../repositories/product.repository';
 import { Product } from '../entities/Product';
-import { CreateProductDto } from '../dtos/create-product.dto';
 
-const productRepo = AppDataSource.getRepository(Product);
-
+// Traer todos los productos
 export const getAllProducts = async (): Promise<Product[]> => {
-  return await productRepo.find({ relations: ['category', 'gender'] });
+  return await productRepository.findAll();
 };
 
+// Traer un producto por ID
 export const getProductById = async (id: string): Promise<Product | null> => {
-  return await productRepo.findOne({ where: { id }, relations: ['category', 'gender'] });
-};
-// service/products.ts
-export const getProductsByCategory = async (categoryId: string) => {
-  return await productRepo.find({
-    where: { category: { id: categoryId } }, // <-- Solo filtro por categoría
-    relations: ["category", "gender"],
-  });
+  return await productRepository.findById(id);
 };
 
-export const createProduct = async (dto: CreateProductDto): Promise<Product> => {
-  const product = productRepo.create(dto);
-  return await productRepo.save(product);
+// Crear un producto
+export const createProduct = async (productData: Partial<Product>): Promise<Product> => {
+  return await productRepository.createProduct(productData);
 };
 
-export const updateProduct = async (id: string, dto: Partial<CreateProductDto>): Promise<Product | null> => {
-  const product = await productRepo.findOneBy({ id });
-  if (!product) return null;
-  productRepo.merge(product, dto);
-  return await productRepo.save(product);
+// Actualizar un producto
+export const updateProduct = async (id: string, productData: Partial<Product>): Promise<Product | null> => {
+  return await productRepository.updateProduct(id, productData);
 };
 
+// Eliminar un producto
 export const deleteProduct = async (id: string): Promise<boolean> => {
-  const result = await productRepo.delete(id);
-  return result.affected !== 0;
+  return await productRepository.deleteProduct(id);
+};
+
+// NUEVO: Traer productos por categoría
+export const getProductsByCategory = async (categoryId: string): Promise<Product[]> => {
+  return await productRepository.findByCategory(categoryId);
 };

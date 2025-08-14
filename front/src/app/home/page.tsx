@@ -54,59 +54,59 @@ export default function Home() {
       </div>
 
       {/* Carrusel de categorías */}
-      <div className="w-full max-w-5xl mx-auto py-10 px-4">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">Categorías</h2>
-        </div>
+     
+<div className="w-full max-w-5xl mx-auto py-10 px-4">
+  <div className="text-center mb-6">
+    <h2 className="text-3xl font-bold text-gray-800">Categorías</h2>
+  </div>
 
-        <div className="relative flex items-center">
-          <button
-            onClick={() => slide(-1)}
-            className="absolute left-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
+  <div className="relative flex items-center">
+    <button
+      onClick={() => slide(-1)}
+      className="absolute left-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
+    >
+      &#10094;
+    </button>
+
+    <div className="overflow-hidden w-full">
+      <div
+        className="flex transition-transform duration-300 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {categories.map((category) => (
+          <Link
+            key={category.id}
+            href={`/category/${category.id}`} // ahora apunta a la página dinámica
+            className="min-w-full flex flex-col items-center cursor-pointer"
           >
-            &#10094;
-          </button>
-
-          <div className="overflow-hidden w-full">
-            <div
-              className="flex transition-transform duration-300 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {categories.map((category) => (
-                <Link 
-                  key={category.id} 
-                  href={`/categories/${category.id}`}
-                  className="min-w-full flex flex-col items-center cursor-pointer"
-                >
-                  <div className="mb-4">{category.icon}</div>
-                  <h3 className="text-xl text-gray-800">{category.name}</h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <button
-            onClick={() => slide(1)}
-            className="absolute right-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
-          >
-            &#10095;
-          </button>
-        </div>
-
-        <div className="flex justify-center mt-4 space-x-2">
-          {categories.map((_, index) => (
-            <span
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full cursor-pointer ${
-                index === currentIndex ? "bg-gray-800" : "bg-gray-400"
-              }`}
-            ></span>
-          ))}
-        </div>
+            <div className="mb-4">{category.icon}</div>
+            <h3 className="text-xl text-gray-800">{category.name}</h3>
+          </Link>
+        ))}
       </div>
+    </div>
 
-      {/* Sección de imágenes grandes */}
+    <button
+      onClick={() => slide(1)}
+      className="absolute right-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
+    >
+      &#10095;
+    </button>
+  </div>
+
+  <div className="flex justify-center mt-4 space-x-2">
+    {categories.map((_, index) => (
+      <span
+        key={index}
+        onClick={() => goToSlide(index)}
+        className={`w-3 h-3 rounded-full cursor-pointer ${
+          index === currentIndex ? "bg-gray-800" : "bg-gray-400"
+        }`}
+      ></span>
+    ))}
+  </div>
+</div>
+      {/* Sección de imágenes grandes de la galeria no de base de datos ojo con esto*/}
       <div className="mt-0 px-0 w-screen min-h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-px">
         {[
           { href: "/categories/2", src: "/images/modelos/modelos2.png", alt: "Remeras" },
