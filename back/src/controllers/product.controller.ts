@@ -32,25 +32,25 @@ export const createProduct = async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Error al crear producto' });
   }
 };
-// export const getProductsByCategory = async (req: Request, res: Response) => {
-//   try {
-//     const { categoryId } = req.params;
-//     if (!categoryId) {
-//       return res.status(400).json({ message: 'Category ID inválido' });
-//     }
 
-//     const products = await productService.getProductsByCategory(categoryId);
 
-//     if (!products || products.length === 0) {
-//       return res.status(404).json({ message: 'No se encontraron productos para esta categoría' });
-//     }
+export const getProductsByCategoryController = async (req: Request, res: Response) => {
+  const categoryId = req.params.id; // toma el id dinámico de la ruta
 
-//     res.status(200).json(products);
-//   } catch (error) {
-//     console.error('Error al obtener productos por categoría:', error);
-//     res.status(500).json({ message: 'Error al obtener productos por categoría' });
-//   }
-// };
+  try {
+    const products = await productService.getProductsByCategory(categoryId);
+
+    if (!products || products.length === 0) {
+      return res.status(200).json([]); // devolver array vacío si no hay productos
+    }
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products by category:", error);
+    res.status(500).json({ message: "Error al obtener productos por categoría" });
+  }
+};
+
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

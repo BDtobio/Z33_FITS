@@ -24,6 +24,6 @@ export const AppDataSource = new DataSource({
   database: DB_DATABASE,
   synchronize: DB_SYNC,
   logging: DB_LOGGING ,
-  entities: [Product, Category, Gender],
+  entities: DB_ENTITIES,
   dropSchema: DB_DROP,
 });

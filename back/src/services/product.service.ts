@@ -1,5 +1,6 @@
 import * as productRepository from '../repositories/product.repository';
 import { Product } from '../entities/Product';
+import { AppDataSource } from '../config/dataSource';
 
 // Traer todos los productos
 export const getAllProducts = async (): Promise<Product[]> => {
@@ -26,7 +27,6 @@ export const deleteProduct = async (id: string): Promise<boolean> => {
   return await productRepository.deleteProduct(id);
 };
 
-// NUEVO: Traer productos por categoría
-// export const getProductsByCategory = async (categoryId: string): Promise<Product[]> => {
-//   return await productRepository.findByCategory(categoryId);
-// };
+export const getProductsByCategory = async (categoryId: string): Promise<Product[]> => {
+  return await productRepository.findByCategory(categoryId);
+};

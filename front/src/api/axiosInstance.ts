@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://z33-fits.onrender.com';
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 console.log("API URL usada en axios:", API_URL);
 
