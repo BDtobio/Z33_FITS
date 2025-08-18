@@ -4,9 +4,8 @@ import { AppDataSource } from '../config/dataSource';
 
 // Traer todos los productos
 export const getAllProducts = async (): Promise<Product[]> => {
-  return await productRepository.findAll();
+  return await productRepository.findAll(); // <-- esto llama a tu findAll personalizado
 };
-
 // Traer un producto por ID
 export const getProductById = async (id: string): Promise<Product | null> => {
   return await productRepository.findById(id);
