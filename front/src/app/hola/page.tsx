@@ -1,70 +1,51 @@
-"use client"
-// pages/clothes/page.tsx
+"use client";
+
 import { useEffect, useState } from "react";
 import { IProduct } from "@/interfaces/IProduct";
-import { getProducts } from "@/helpers/getProducts"; // Asegúrate de que la ruta sea correcta
+import axiosInstance from "@/api/axiosInstance"; // tu instancia de axios
 import Image from "next/image";
 
-const ProductsPage = () => {
-  // Estado para almacenar los productos
+export default function ProductsPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Llamada a la API para obtener los productos
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const products = await getProducts(); // Llama a la función que has creado
-        setProducts(products);
+        const res = await axiosInstance.get("/products"); 
+        setProducts(res.data);
       } catch (error) {
-  console.error(error);  // <-- usa la variable para que no sea “sin uso”
-  setError("No se pudieron cargar los productos.");
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []); // La dependencia vacía asegura que solo se ejecute una vez al montar el componente
+  }, []);
 
-  // Si está cargando, mostrar un mensaje
-  if (loading) {
-    return <p className="text-center text-xl text-gray-500">Cargando productos...</p>;
-  }
+  if (loading) return <p>Cargando productos...</p>;
+  if (products.length === 0) return <p>No hay productos disponibles.</p>;
 
-  // Si hubo un error, mostrar el mensaje de error
-  if (error) {
-    return <p className="text-center text-xl text-red-500">{error}</p>;
-  }
-
-  // Mostrar los productos
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Productos de Ropa</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.length > 0 ? (
-          products.map((product) => (
-            <div key={  product.id} className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">Todos los Productos</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="border rounded p-4">
             <Image
-  src={ product.image_url}
-  alt={ product.name}
-  width={400}      // ancho deseado en px
-  height={192}     // alto deseado en px (proporcional a 48*4)
-  className="rounded-lg mb-4 object-cover w-full"
-/>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{ product.name}</h3>
-              <p className="text-sm text-gray-600 mb-2">{ product.description}</p>
-              <p className="text-lg font-semibold text-gray-900 mb-2">Precio: ${ product.price}</p>
-              <p className="text-sm text-gray-500">Stock: { product.stock}</p>
-            </div>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-xl text-gray-500">No hay productos disponibles.</p>
-        )}
+              src={product.image_url}
+              alt={product.name}
+              width={400}
+              height={300}
+              className="w-full h-48 object-cover mb-4"
+            />
+            <h2 className="font-semibold">{product.name}</h2>
+            <p className="text-gray-600">{product.description}</p>
+            <p className="mt-2 font-bold">${product.price}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
-};
-
-export default ProductsPage;
+}
