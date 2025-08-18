@@ -1,7 +1,5 @@
 import { DataSource } from "typeorm";
-import { Product } from "../entities/Product";
-import { Category } from "../entities/Category";
-import { Gender } from "../entities/Gender";
+
 import { 
   DB_DATABASE, 
   DB_DROP, 
@@ -26,4 +24,12 @@ export const AppDataSource = new DataSource({
   logging: DB_LOGGING ,
   entities: DB_ENTITIES,
   dropSchema: DB_DROP,
+   ssl: { rejectUnauthorized: false },
+});
+console.log({
+  type: DB_TYPE,
+  host: DB_HOST,
+  port: DB_PORT,
+  username: DB_USERNAME,
+  database: DB_DATABASE
 });
