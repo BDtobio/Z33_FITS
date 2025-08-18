@@ -3,7 +3,7 @@ import * as productService from '../services/product.service';
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await productService.getAllProducts();
+    const products = await productService.findAll();
     console.log("Productos desde backend:", products); // <-- log para debug
     res.status(200).json(products);
   } catch (error) {
@@ -17,7 +17,7 @@ export const getProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: 'ID inválido' });
 
-    const product = await productService.getProductById(id);
+    const product = await productService.findById(id);
     if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
 
     res.status(200).json(product);
@@ -40,7 +40,7 @@ export const getProductsByCategoryController = async (req: Request, res: Respons
   const categoryId = req.params.id; // toma el id dinámico de la ruta
 
   try {
-    const products = await productService.getProductsByCategory(categoryId);
+    const products = await productService.findByCategory(categoryId);
 
     if (!products || products.length === 0) {
       return res.status(200).json([]); // devolver array vacío si no hay productos
