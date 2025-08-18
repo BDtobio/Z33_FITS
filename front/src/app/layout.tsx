@@ -5,7 +5,7 @@ import NavBar from "@/components/NavBar/NavBar";
 import ExcludeWrapper from "@/components/ExcludeWrapper/ExcludeWrapper";
 import Footer from "@/components/Footer/Footer";
 
-import { ProductProvider } from "@/context/ProductContext"; // <-- importa tu contexto
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +34,9 @@ export default function RootLayout({
           <NavBar />
         </ExcludeWrapper>
 
-        <ProductProvider>
+        {/* <ProductProvider> */}
           <main>{children}</main>
-        </ProductProvider>
+        {/* </ProductProvider> */}
 
         <Footer />
       </body>
