@@ -13,6 +13,8 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         const res = await axiosInstance.get("/products"); 
+        console.log("Respuesta completa de Axios:", res); // <-- log completo de la respuesta
+        console.log("Datos de productos:", res.data);      // <-- log solo del array de productos
         setProducts(res.data);
       } catch (error) {
         console.error("Error fetching products:", error);

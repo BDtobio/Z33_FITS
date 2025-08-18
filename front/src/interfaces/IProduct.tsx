@@ -10,6 +10,6 @@ export interface IProduct {
   image_url: string;
   category: ICategory;
   gender: IGender;
-  created_at: string; // o Date, según prefieras
+  created_at: string; 
   updated_at: string;
 }
