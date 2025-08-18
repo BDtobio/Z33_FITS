@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import router from "./routes/indexRouter";
+import indexRouter from "./routes/indexRouter";
 import morgan from "morgan";
 
 const app = express();
@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use('/', router);
+app.use('/', indexRouter);
 
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
