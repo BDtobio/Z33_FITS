@@ -1,6 +1,3 @@
-import { ICategory } from "./ICategory";
-import { IGender } from "./IGender";
-
 export interface IProduct {
   id: string;
   name: string;
@@ -8,8 +5,8 @@ export interface IProduct {
   price: number;
   stock: number;
   image_url: string;
-  category: ICategory;
-  gender: IGender;
+  category_id: string;
+  gender_id: string;
   created_at: string; 
   updated_at: string;
 }
