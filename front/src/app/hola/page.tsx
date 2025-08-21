@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { IProduct } from "@/interfaces/IProduct";
-import axiosInstance from "@/api/axiosInstance"; // tu instancia de axios
+import axiosInstance from "../../api/axiosInstance"; // tu instancia de axios
 import Image from "next/image";
 
 export default function ProductsPage() {
