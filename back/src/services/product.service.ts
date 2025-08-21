@@ -1,13 +1,16 @@
 // services/product.service.ts
 import { AppDataSource } from '../config/dataSource';
 import { Product } from '../entities/Product';
-
-export const findAll = async (): Promise<Product[]> => {
-  return await AppDataSource.manager.find(Product, {
-    relations: ['category', 'gender'],
-    order: { created_at: 'DESC' },
-  });
+export const findAllNoRelations = async (): Promise<Product[]> => {
+  return await AppDataSource.manager.find(Product);
 };
+
+// export const findAll = async (): Promise<Product[]> => {
+//   return await AppDataSource.manager.find(Product, {
+//     relations: ['category', 'gender'],
+//     order: { created_at: 'DESC' },
+//   });
+// };
 
 export const findById = async (id: string): Promise<Product | null> => {
   return await AppDataSource.manager.findOne(Product, {
