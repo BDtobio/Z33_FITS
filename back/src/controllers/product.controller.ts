@@ -4,14 +4,12 @@ import * as productService from '../services/product.service';
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await productService.findAll();
-    console.log("Productos desde backend:", products); // <-- log para debug
-    res.status(200).json(products);
+    res.json(products);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error al obtener productos' });
+    res.status(500).json({ message: "Error fetching products" });
   }
 };
-
 export const getProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
