@@ -2,17 +2,13 @@
 import { AppDataSource } from '../config/dataSource';
 import { Product } from '../entities/Product';
 // Sin relaciones
-export const findAllTest = async (): Promise<Product[]> => {
-  const productos = await AppDataSource.manager.find(Product); // sin relaciones
-  console.log("Productos sin relaciones:", productos);
-  return productos;
+
+export const findAll = async (): Promise<Product[]> => {
+  return await AppDataSource.manager.find(Product, {
+    relations: ['category', 'gender'],
+    order: { created_at: 'DESC' },
+  });
 };
-// export const findAll = async (): Promise<Product[]> => {
-//   return await AppDataSource.manager.find(Product, {
-//     relations: ['category', 'gender'],
-//     order: { created_at: 'DESC' },
-//   });
-// };
 
 export const findById = async (id: string): Promise<Product | null> => {
   return await AppDataSource.manager.findOne(Product, {
