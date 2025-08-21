@@ -16,7 +16,9 @@ export const productService = {
     });
   }
 };
-
+export const getCategoryById = async (id: string) => {
+  return await AppDataSource.getRepository(Category).findOneBy({ id });
+};
 export const createCategory = async (name: string): Promise<Category> => {
   const newCategory = categoryRepository.create({ name });
   return await categoryRepository.save(newCategory);
