@@ -5,8 +5,8 @@ export interface IProduct {
   price: number;
   stock: number;
   image_url: string;
-  category_id: string;
-  gender_id: string;
+  category: { id: string; name: string };
+  gender: { id: string; name: string };
   created_at: string; 
   updated_at: string;
 }

@@ -64,7 +64,7 @@ const DropsSection: React.FC = () => {
             <div key={clothe.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all border-l-4 border-red-600">
      <Image
   src={clothe.image_url}
-  alt={clothe.category_id}  // <-- Aquí usamos el nombre, que es string
+  alt={clothe.category.id}  // <-- Aquí usamos el nombre, que es string
   width={400}
   height={240}
   className="rounded-md mb-4 object-cover"

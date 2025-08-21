@@ -3,7 +3,7 @@ import * as productService from '../services/product.service';
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await productService.findAllNoRelations();
+    const products = await productService.findAllTest();
     res.json(products);
   } catch (error) {
     console.error(error);
