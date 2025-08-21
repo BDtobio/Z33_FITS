@@ -35,7 +35,7 @@ export default function RootLayout({
         </ExcludeWrapper>
 
         {/* <ProductProvider> */}
-         <main className="flex-1">
+         <main className="flex-grow">
     {children}
   </main>
         {/* </ProductProvider> */}
