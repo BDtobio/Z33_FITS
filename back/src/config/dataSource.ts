@@ -24,8 +24,20 @@ export const AppDataSource = new DataSource({
   logging: DB_LOGGING ,
   entities: DB_ENTITIES,
   dropSchema: DB_DROP,
-   ssl: { rejectUnauthorized: false },
 });
+// export const AppDataSource = new DataSource({
+//   type: DB_TYPE,
+//   host: DB_HOST,
+//   port: DB_PORT,
+//   username: DB_USERNAME,
+//   password: DB_PASSWORD,
+//   database: DB_DATABASE,
+//   synchronize: DB_SYNC,
+//   logging: DB_LOGGING ,
+//   entities: DB_ENTITIES,
+//   dropSchema: DB_DROP,
+//    ssl: { rejectUnauthorized: false },
+// });
 console.log({
   type: DB_TYPE,
   host: DB_HOST,
