@@ -2,7 +2,7 @@ import { FaWhatsapp, FaInstagram, FaTiktok, FaEnvelope } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-foreground text-white py-6 w-full text-center mt-auto">
+    <footer className="bg-foreground text-white py-6 w-full text-center ">
       <div className="flex justify-center items-center space-x-6 mb-4">
         <a href="https://wa.me/yourphonenumber" className="mx-4 text-2xl hover:text-green-500 transition-all">
           <FaWhatsapp />

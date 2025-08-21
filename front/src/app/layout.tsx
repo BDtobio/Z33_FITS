@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/NavBar/NavBar";
+
 import ExcludeWrapper from "@/components/ExcludeWrapper/ExcludeWrapper";
 import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/NavBar/NavBar";
 
 
 
@@ -30,17 +31,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ExcludeWrapper>
-          <NavBar />
-        </ExcludeWrapper>
+        <div className="flex flex-col min-h-screen">
+  <ExcludeWrapper>
+    <Navbar />
+  </ExcludeWrapper>
 
-        {/* <ProductProvider> */}
-         <main className="flex-grow">
+  {/* Main ocupa todo el espacio disponible */}
+  <main className="flex-grow">
     {children}
   </main>
-        {/* </ProductProvider> */}
 
-        <Footer />
+  {/* Footer pegado abajo */}
+  <Footer />
+</div>
       </body>
     </html>
   );
