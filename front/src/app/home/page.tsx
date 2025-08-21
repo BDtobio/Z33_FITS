@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Head from "next/head";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { 
   FaTshirt, 
   FaHatCowboy, 
@@ -10,7 +11,8 @@ import {
   FaBaseballBall,
 } from "react-icons/fa";
 import { MdBackpack } from "react-icons/md";
-import Image from "next/image";
+import { IProduct } from "@/interfaces/IProduct";
+import { getProductsByCategory } from "@/helpers/getProductCategory";
 
 const categories = [
   { id: "1", name: "Zapatillas", icon: <FaBaseballBall size={40} /> },
@@ -23,12 +25,28 @@ const categories = [
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0].id);
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  // Cargar productos cuando cambia la categoría seleccionada
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await getProductsByCategory(selectedCategoryId);
+      setProducts(data);
+    };
+    fetchProducts();
+  }, [selectedCategoryId]);
 
   const slide = (direction: number) => {
-    setCurrentIndex((prevIndex) => (prevIndex + direction + categories.length) % categories.length);
+    const newIndex = (currentIndex + direction + categories.length) % categories.length;
+    setCurrentIndex(newIndex);
+    setSelectedCategoryId(categories[newIndex].id);
   };
 
-  const goToSlide = (index: number) => setCurrentIndex(index);
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+    setSelectedCategoryId(categories[index].id);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -54,82 +72,78 @@ export default function Home() {
       </div>
 
       {/* Carrusel de categorías */}
-     
-<div className="w-full max-w-5xl mx-auto py-10 px-4">
-  <div className="text-center mb-6">
-    <h2 className="text-3xl font-bold text-gray-800">Categorías</h2>
-  </div>
+      <div className="w-full max-w-5xl mx-auto py-10 px-4">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-gray-800">Categorías</h2>
+        </div>
 
-  <div className="relative flex items-center">
-    <button
-      onClick={() => slide(-1)}
-      className="absolute left-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
-    >
-      &#10094;
-    </button>
-
-    <div className="overflow-hidden w-full">
-      <div
-        className="flex transition-transform duration-300 ease-in-out"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {categories.map((category) => (
-          <Link
-            key={category.id}
-            href={`/category/${category.id}`} // ahora apunta a la página dinámica
-            className="min-w-full flex flex-col items-center cursor-pointer"
+        <div className="relative flex items-center">
+          <button
+            onClick={() => slide(-1)}
+            className="absolute left-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
           >
-            <div className="mb-4">{category.icon}</div>
-            <h3 className="text-xl text-gray-800">{category.name}</h3>
-          </Link>
-        ))}
+            &#10094;
+          </button>
+
+          <div className="overflow-hidden w-full">
+            <div
+              className="flex transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => setSelectedCategoryId(category.id)}
+                  className="min-w-full flex flex-col items-center cursor-pointer"
+                >
+                  <div className="mb-4">{category.icon}</div>
+                  <h3 className="text-xl text-gray-800">{category.name}</h3>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={() => slide(1)}
+            className="absolute right-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
+          >
+            &#10095;
+          </button>
+        </div>
+
+        <div className="flex justify-center mt-4 space-x-2">
+          {categories.map((_, index) => (
+            <span
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full cursor-pointer ${
+                index === currentIndex ? "bg-gray-800" : "bg-gray-400"
+              }`}
+            ></span>
+          ))}
+        </div>
       </div>
-    </div>
 
-    <button
-      onClick={() => slide(1)}
-      className="absolute right-0 z-10 p-2 text-2xl text-gray-700 bg-white rounded-full shadow-md hover:bg-gray-200"
-    >
-      &#10095;
-    </button>
-  </div>
-
-  <div className="flex justify-center mt-4 space-x-2">
-    {categories.map((_, index) => (
-      <span
-        key={index}
-        onClick={() => goToSlide(index)}
-        className={`w-3 h-3 rounded-full cursor-pointer ${
-          index === currentIndex ? "bg-gray-800" : "bg-gray-400"
-        }`}
-      ></span>
-    ))}
-  </div>
+      {/* Productos filtrados por categoría */}
+      <div className="mt-10 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
+        {products.length === 0 && <p className="col-span-full text-center">No hay productos en esta categoría.</p>}
+        {products.map((p) => (
+          <div key={p.id} className="border p-4 rounded-lg shadow hover:shadow-md transition">
+          <div className="relative w-full h-48 rounded-lg overflow-hidden">
+  <Image
+    src={p.image_url}
+    alt={p.name}
+    fill
+    style={{ objectFit: "cover" }}
+  />
 </div>
-      {/* Sección de imágenes grandes de la galeria no de base de datos ojo con esto*/}
-      <div className="mt-0 px-0 w-screen min-h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-px">
-        {[
-          { href: "/categories/2", src: "/images/modelos/modelos2.png", alt: "Remeras" },
-          { href: "/categories/4", src: "/images/modelos/modelos1.png", alt: "Pantalones largos" },
-          { href: "/categories/6", src: "/images/modelos/modelos4.png", alt: "Accesorios" },
-          { href: "/categories/3", src: "/images/modelos/modelos6.png", alt: "Gorras" }
-        ].map(({ href, src, alt }) => (
-          <Link key={href} href={href} className="relative flex">
-            <Image
-              src={src}
-              alt={alt}
-              width={1920}
-              height={1080}
-              className="w-full h-[60vh] md:h-[60vh] lg:h-[90] object-cover transition-all duration-300"
-            />
-            <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-              bg-white text-red-600 font-bold py-2 px-4 rounded transition-all duration-300 
-              hover:bg-red-600 hover:text-white hover:scale-110">
-              Ver
-            </button>
-          </Link>
+            <h3 className="text-lg font-semibold">{p.name}</h3>
+            <p className="text-gray-600">{p.description}</p>
+            <p className="text-red-600 font-bold mt-2">${p.price}</p>
+          </div>
         ))}
       </div>
+
 
       {/* Últimos Drops */}
       <div className="bg-black text-center h-[200px] flex flex-col items-center justify-center">

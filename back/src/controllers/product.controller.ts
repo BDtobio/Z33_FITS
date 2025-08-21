@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import * as productService from '../services/product.service';
+import { AppDataSource } from '../config/dataSource';
+import { Product } from '../entities/Product';
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
@@ -35,22 +37,20 @@ export const createProduct = async (req: Request, res: Response) => {
 
 
 export const getProductsByCategoryController = async (req: Request, res: Response) => {
-  const categoryId = req.params.id; // toma el id dinámico de la ruta
-
   try {
-    const products = await productService.findByCategory(categoryId);
+    const categoryId = req.params.id;
 
-    if (!products || products.length === 0) {
-      return res.status(200).json([]); // devolver array vacío si no hay productos
-    }
+    const products = await AppDataSource.getRepository(Product).find({
+      where: { category: { id: categoryId } }, // Filtra por categoría
+      relations: ["category", "gender"]       // Para que te traiga la info relacionada
+    });
 
-    res.status(200).json(products);
+    res.json(products);
   } catch (error) {
-    console.error("Error fetching products by category:", error);
+    console.error(error);
     res.status(500).json({ message: "Error al obtener productos por categoría" });
   }
 };
-
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

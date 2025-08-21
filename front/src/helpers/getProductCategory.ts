@@ -4,7 +4,7 @@ import axiosInstance from "@/api/axiosInstance";
 export const getProductsByCategory = async (categoryId: string): Promise<IProduct[]> => {
   try {
     const res = await axiosInstance.get(`/products/category/${categoryId}`);
-    return res.data; // Axios ya parsea JSON automáticamente
+    return res.data;
   } catch (error) {
     console.error("Error fetching products by category:", error);
     return [];

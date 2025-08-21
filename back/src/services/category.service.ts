@@ -1,5 +1,6 @@
 import { AppDataSource } from '../config/dataSource';
 import { Category } from '../entities/Category';
+import { Product } from '../entities/Product';
 
 const categoryRepository = AppDataSource.getRepository(Category);
 
@@ -7,8 +8,13 @@ export const getAllCategories = async (): Promise<Category[]> => {
   return await categoryRepository.find();
 };
 
-export const getCategoryById = async (id: string): Promise<Category | null> => {
-  return await categoryRepository.findOneBy({ id });
+export const productService = {
+  getProductsByCategory: async (categoryId: string) => {
+    return await AppDataSource.getRepository(Product).find({
+      where: { category: { id: categoryId } },
+      relations: ["category", "gender"]
+    });
+  }
 };
 
 export const createCategory = async (name: string): Promise<Category> => {
