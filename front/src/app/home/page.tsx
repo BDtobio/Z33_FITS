@@ -144,6 +144,7 @@ export default function Home() {
         ))}
       </div>
 
+{/* Sección de imágenes grandes de la galeria no de base de datos ojo con esto*/} <div className="mt-0 px-0 w-screen min-h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-px"> {[ { href: "/categories/2", src: "/images/modelos/modelos2.png", alt: "Remeras" }, { href: "/categories/4", src: "/images/modelos/modelos1.png", alt: "Pantalones largos" }, { href: "/categories/6", src: "/images/modelos/modelos4.png", alt: "Accesorios" }, { href: "/categories/3", src: "/images/modelos/modelos6.png", alt: "Gorras" } ].map(({ href, src, alt }) => ( <Link key={href} href={href} className="relative flex"> <Image src={src} alt={alt} width={1920} height={1080} className="w-full h-[60vh] md:h-[60vh] lg:h-[90] object-cover transition-all duration-300" /> <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-red-600 font-bold py-2 px-4 rounded transition-all duration-300 hover:bg-red-600 hover:text-white hover:scale-110"> Ver </button> </Link> ))} </div>
 
       {/* Últimos Drops */}
       <div className="bg-black text-center h-[200px] flex flex-col items-center justify-center">
