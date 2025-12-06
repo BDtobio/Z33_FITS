@@ -1,14 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Category } from './Category';
-import { Gender } from './Gender';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Gender } from "./Gender";
+import { Category } from "./Category";
 
 @Entity('products')
 export class Product {
@@ -37,6 +29,9 @@ export class Product {
   @ManyToOne(() => Gender, (gender) => gender.products)
   @JoinColumn({ name: 'gender_id' })
   gender: Gender;
+
+  @Column({ default: true })
+  active: boolean;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

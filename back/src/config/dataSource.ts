@@ -6,11 +6,12 @@ import { Category } from "../entities/Category";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL, // Railway connection string
+  url: process.env.DATABASE_URL,
   entities: [Product, Category, Gender],
   synchronize: true,
   logging: false,
-  ssl: {
-    rejectUnauthorized: false, // Required in Railway
-  },
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false } // Railway
+      : false, // Local
 });
