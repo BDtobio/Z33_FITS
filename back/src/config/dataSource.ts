@@ -5,14 +5,12 @@ export const AppDataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
 
-  // 👇 Esto es lo correcto para proyectos TS
-  entities: process.env.NODE_ENV === "production"
-    ? ["dist/entities/*.js"]     // <- Railway usa JS compilado
-    : ["src/entities/*.ts"],     // <- Local usa TS directamente
+  entities: ["dist/entities/*.js"], // 🔥 Forzamos carga correcta
 
   synchronize: true,
-  logging: false,
+  dropSchema: true, // 🔥 CREA TODAS LAS TABLAS DESDE CERO
 
-  // 👇 Railway SIEMPRE necesita SSL
-  ssl: { rejectUnauthorized: false }
+  logging: true,
+
+  ssl: { rejectUnauthorized: false },
 });
