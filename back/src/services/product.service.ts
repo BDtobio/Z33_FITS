@@ -31,3 +31,14 @@ export const deleteProduct = async (id: string) => {
   await productRepository.update(id, { active: false });
   return true;
 };
+
+export const getProductsByCategory = async (categoryId: string) => {
+  return productRepository.find({
+    where: {
+      category: { id: categoryId },
+      active: true,
+    },
+    relations: ["category", "gender"],
+    order: { created_at: "DESC" },
+  });
+};

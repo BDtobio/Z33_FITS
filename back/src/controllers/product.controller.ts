@@ -47,3 +47,14 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(400).json({ error: "Error deleting product" });
   }
 };
+
+
+export const getProductsByCategoryController = async (req: Request, res: Response) => {
+  try {
+    const { categoryId } = req.params;
+    const products = await productService.getProductsByCategory(categoryId);
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener productos por categoría" });
+  }
+};
