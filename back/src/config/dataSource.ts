@@ -1,17 +1,18 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Gender } from "../entities/Gender";
-import { Product } from "../entities/Product";
-import { Category } from "../entities/Category";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
-  entities: [Product, Category, Gender],
+
+  // 👇 Esto es lo correcto para proyectos TS
+  entities: process.env.NODE_ENV === "production"
+    ? ["dist/entities/*.js"]     // <- Railway usa JS compilado
+    : ["src/entities/*.ts"],     // <- Local usa TS directamente
+
   synchronize: true,
   logging: false,
-  ssl:
-    process.env.NODE_ENV === "production"
-      ? { rejectUnauthorized: false } // Railway
-      : false, // Local
+
+  // 👇 Railway SIEMPRE necesita SSL
+  ssl: { rejectUnauthorized: false }
 });
