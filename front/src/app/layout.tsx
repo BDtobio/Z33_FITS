@@ -5,7 +5,7 @@ import "./globals.css";
 import ExcludeWrapper from "@/components/ExcludeWrapper/ExcludeWrapper";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/NavBar/NavBar";
-
+import { AuthProvider } from "@/context/AuthContext"; // 👈 IMPORTANTE
 
 
 const geistSans = Geist({
@@ -25,25 +25,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex flex-col min-h-screen">
-  <ExcludeWrapper>
-    <Navbar />
-  </ExcludeWrapper>
+        
+        {/* 👇 EL CONTEXTO ENVUELVE TODA LA APP */}
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen">
+            <ExcludeWrapper>
+              <Navbar />
+            </ExcludeWrapper>
 
-  {/* Main ocupa todo el espacio disponible */}
-  <main className="flex-grow">
-    {children}
-  </main>
+            <main className="flex-grow">
+              {children}
+            </main>
 
-  {/* Footer pegado abajo */}
-  <Footer />
-</div>
+            <Footer />
+          </div>
+        </AuthProvider>
+
       </body>
     </html>
   );

@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { Category } from "../entities/Category"; // ejemplo
-import {  Gender } from "../entities/Gender";
-@Entity()
-export class Product {
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Gender } from "./Gender";
+import { Category } from "./Category";
 
+@Entity("product")
+export class Product {
+  
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -22,10 +23,10 @@ export class Product {
   @Column()
   image_url!: string;
 
-  @Column({ type: "enum", enum: Category })
+  @ManyToOne(() => Category, (category) => category.products)
   category!: Category;
 
-  @Column({ type: "enum", enum: Gender })
+  @ManyToOne(() => Gender, (gender) => gender.products)
   gender!: Gender;
 
   @Column({ default: true })

@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsByCategoryController = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProduct = exports.getProducts = void 0;
+exports.getProductsByCategoryController = exports.deleteProduct = exports.getProductsByGenderController = exports.updateProduct = exports.createProduct = exports.getProduct = exports.getProducts = void 0;
 const productService = __importStar(require("../services/product.service"));
 const getProducts = async (req, res) => {
     try {
@@ -79,6 +79,18 @@ const updateProduct = async (req, res) => {
     }
 };
 exports.updateProduct = updateProduct;
+const getProductsByGenderController = async (req, res) => {
+    try {
+        const { genderId } = req.params;
+        const products = await productService.getProductsByGender(genderId);
+        res.status(200).json(products);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener productos por género" });
+    }
+};
+exports.getProductsByGenderController = getProductsByGenderController;
 const deleteProduct = async (req, res) => {
     try {
         await productService.deleteProduct(req.params.id);

@@ -1,5 +1,7 @@
+
+import { getCategories } from "@/context/ProductContext";
+import { ICategory } from "@/interfaces/ICategory";
 import { useEffect, useState } from "react";
-import { getCategories, ICategory } from "../../helpers/getCategories";
 
 interface CategoryMenuProps {
   onSelectCategory: (id: string) => void;

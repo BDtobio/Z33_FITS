@@ -39,6 +39,20 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
+
+export const getProductsByGenderController = async (req: Request, res: Response) => {
+  try {
+    const { genderId } = req.params;
+
+    const products = await productService.getProductsByGender(genderId);
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener productos por género" });
+  }
+};
+
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     await productService.deleteProduct(req.params.id);

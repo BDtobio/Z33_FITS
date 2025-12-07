@@ -4,70 +4,100 @@ exports.deleteGender = exports.updateGender = exports.createGender = exports.get
 const dataSource_1 = require("../config/dataSource");
 const Gender_1 = require("../entities/Gender");
 const genderRepository = dataSource_1.AppDataSource.getRepository(Gender_1.Gender);
+// =============================
+// 📌 Obtener todos los géneros
+// =============================
 const getGenders = async (req, res) => {
     try {
         const genders = await genderRepository.find();
-        res.status(200).json(genders);
+        return res.status(200).json(genders);
     }
     catch (error) {
-        res.status(500).json({ message: 'Error al obtener géneros' });
+        console.error("Error getGenders:", error);
+        return res.status(500).json({ message: "Error al obtener géneros" });
     }
 };
 exports.getGenders = getGenders;
+// =============================
+// 📌 Obtener género por ID
+// =============================
 const getGender = async (req, res) => {
     try {
         const { id } = req.params;
         const gender = await genderRepository.findOneBy({ id });
-        if (!gender)
-            return res.status(404).json({ message: 'Género no encontrado' });
-        res.status(200).json(gender);
+        if (!gender) {
+            return res.status(404).json({ message: "Género no encontrado" });
+        }
+        return res.status(200).json(gender);
     }
     catch (error) {
-        res.status(500).json({ message: 'Error al obtener género' });
+        console.error("Error getGender:", error);
+        return res.status(500).json({ message: "Error al obtener género" });
     }
 };
 exports.getGender = getGender;
+// =============================
+// 📌 Crear un nuevo género
+// =============================
 const createGender = async (req, res) => {
     try {
         const { name } = req.body;
-        if (!name)
-            return res.status(400).json({ message: 'El nombre es obligatorio' });
+        if (!name || name.trim() === "") {
+            return res.status(400).json({ message: "El nombre es obligatorio" });
+        }
+        const exists = await genderRepository.findOneBy({ name });
+        if (exists) {
+            return res.status(409).json({ message: "Ese género ya existe" });
+        }
         const newGender = genderRepository.create({ name });
         const savedGender = await genderRepository.save(newGender);
-        res.status(201).json(savedGender);
+        return res.status(201).json(savedGender);
     }
     catch (error) {
-        res.status(400).json({ message: 'Error al crear género' });
+        console.error("Error createGender:", error);
+        return res.status(500).json({ message: "Error al crear género" });
     }
 };
 exports.createGender = createGender;
+// =============================
+// 📌 Actualizar un género
+// =============================
 const updateGender = async (req, res) => {
     try {
         const { id } = req.params;
         const { name } = req.body;
         const gender = await genderRepository.findOneBy({ id });
-        if (!gender)
-            return res.status(404).json({ message: 'Género no encontrado' });
-        gender.name = name ?? gender.name;
-        const updatedGender = await genderRepository.save(gender);
-        res.status(200).json(updatedGender);
+        if (!gender) {
+            return res.status(404).json({ message: "Género no encontrado" });
+        }
+        if (name && name.trim() !== "") {
+            gender.name = name;
+        }
+        const updated = await genderRepository.save(gender);
+        return res.status(200).json(updated);
     }
     catch (error) {
-        res.status(400).json({ message: 'Error al actualizar género' });
+        console.error("Error updateGender:", error);
+        return res.status(500).json({ message: "Error al actualizar género" });
     }
 };
 exports.updateGender = updateGender;
+// =============================
+// 📌 Eliminar un género
+// =============================
 const deleteGender = async (req, res) => {
     try {
         const { id } = req.params;
         const gender = await genderRepository.findOneBy({ id });
-        if (!gender)
-            return res.status(404).json({ message: 'Género no encontrado' });
+        if (!gender) {
+            return res.status(404).json({ message: "Género no encontrado" });
+        }
         await genderRepository.remove(gender);
-        res.status(200).json({ message: 'Género eliminado' });
+        return res.status(200).json({ message: "Género eliminado correctamente" });
     }
     catch (error) {
-        res.status(400).json({ message: 'Error al eliminar género' });
+        console.error("Error deleteGender:", error);
+        return res.status(500).json({ message: "Error al eliminar género" });
     }
 };
 exports.deleteGender = deleteGender;

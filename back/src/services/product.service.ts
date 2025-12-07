@@ -32,6 +32,14 @@ export const deleteProduct = async (id: string) => {
   return true;
 };
 
+
+export const getProductsByGender = async (genderId: string) => {
+  return await productRepository.find({
+    where: { gender: { id: genderId } },
+    relations: ["category", "gender"],
+  });
+};
+
 export const getProductsByCategory = async (categoryId: string) => {
   return productRepository.find({
     where: {

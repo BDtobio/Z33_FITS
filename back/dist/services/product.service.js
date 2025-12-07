@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsByCategory = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.findById = exports.findAll = exports.productRepository = void 0;
+exports.getProductsByCategory = exports.getProductsByGender = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.findById = exports.findAll = exports.productRepository = void 0;
 const dataSource_1 = require("../config/dataSource");
 const Product_1 = require("../entities/Product");
 exports.productRepository = dataSource_1.AppDataSource.getRepository(Product_1.Product);
@@ -33,6 +33,13 @@ const deleteProduct = async (id) => {
     return true;
 };
 exports.deleteProduct = deleteProduct;
+const getProductsByGender = async (genderId) => {
+    return await exports.productRepository.find({
+        where: { gender: { id: genderId } },
+        relations: ["category", "gender"],
+    });
+};
+exports.getProductsByGender = getProductsByGender;
 const getProductsByCategory = async (categoryId) => {
     return exports.productRepository.find({
         where: {

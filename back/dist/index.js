@@ -8,20 +8,25 @@ require("reflect-metadata");
 const dataSource_1 = require("./config/dataSource");
 const server_1 = __importDefault(require("./server"));
 const envs_1 = require("./config/envs");
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("Entities cargadas:", dataSource_1.AppDataSource.options.entities);
-const initialize = async () => {
-    console.log("DATABASE_URL:", process.env.DATABASE_URL);
-    console.log("Initializing server");
+console.log("📦 Entities cargadas:", dataSource_1.AppDataSource.options.entities);
+const initializeServer = async () => {
+    console.log("🔌 Configuración DB:", {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        username: process.env.DB_USERNAME,
+        database: process.env.DB_DATABASE,
+    });
+    console.log("🚀 Inicializando servidor...");
     try {
         await dataSource_1.AppDataSource.initialize();
-        console.log("Database initialized");
+        console.log("📦 Base de datos inicializada con éxito");
         server_1.default.listen(envs_1.PORT, () => {
-            console.log(`Server running on port ${envs_1.PORT}`);
+            console.log(`🔥 Server running on port ${envs_1.PORT}`);
         });
     }
     catch (err) {
-        console.error("❌ Error inicializando la DB:", err);
+        console.error("❌ Error inicializando la DB:");
+        console.error(err);
     }
 };
-initialize();
+initializeServer();

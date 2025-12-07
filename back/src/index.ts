@@ -1,26 +1,32 @@
-import "dotenv/config"; 
+import "dotenv/config";
 import "reflect-metadata";
 import { AppDataSource } from "./config/dataSource";
 import app from "./server";
 import { PORT } from "./config/envs";
 
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("Entities cargadas:", AppDataSource.options.entities);
+console.log("📦 Entities cargadas:", AppDataSource.options.entities);
 
-const initialize = async () => {
-  console.log("DATABASE_URL:", process.env.DATABASE_URL); 
-  console.log("Initializing server");
-  
+const initializeServer = async () => {
+  console.log("🔌 Configuración DB:", {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.DB_USERNAME,
+    database: process.env.DB_DATABASE,
+  });
+
+  console.log("🚀 Inicializando servidor...");
+
   try {
     await AppDataSource.initialize();
-    console.log("Database initialized");
-    
+    console.log("📦 Base de datos inicializada con éxito");
+
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`🔥 Server running on port ${PORT}`);
     });
   } catch (err) {
-    console.error("❌ Error inicializando la DB:", err);
+    console.error("❌ Error inicializando la DB:");
+    console.error(err);
   }
 };
 
-initialize();
+initializeServer();

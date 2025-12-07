@@ -16,7 +16,7 @@ let Gender = class Gender {
 };
 exports.Gender = Gender;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", String)
 ], Gender.prototype, "id", void 0);
 __decorate([
@@ -28,5 +28,5 @@ __decorate([
     __metadata("design:type", Array)
 ], Gender.prototype, "products", void 0);
 exports.Gender = Gender = __decorate([
-    (0, typeorm_1.Entity)('genders')
+    (0, typeorm_1.Entity)("genders")
 ], Gender);

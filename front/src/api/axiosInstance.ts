@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
 
 console.log("API URL usada en axios:", API_URL);
 

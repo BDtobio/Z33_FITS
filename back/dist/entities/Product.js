@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product = void 0;
 const typeorm_1 = require("typeorm");
-const Category_1 = require("../entities/Category"); // ejemplo
-const Gender_1 = require("../entities/Gender");
+const Gender_1 = require("./Gender");
+const Category_1 = require("./Category");
 let Product = class Product {
 };
 exports.Product = Product;
@@ -41,11 +41,11 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "image_url", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "enum", enum: Category_1.Category }),
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.products),
     __metadata("design:type", Category_1.Category)
 ], Product.prototype, "category", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "enum", enum: Gender_1.Gender }),
+    (0, typeorm_1.ManyToOne)(() => Gender_1.Gender, (gender) => gender.products),
     __metadata("design:type", Gender_1.Gender)
 ], Product.prototype, "gender", void 0);
 __decorate([
@@ -61,5 +61,5 @@ __decorate([
     __metadata("design:type", Date)
 ], Product.prototype, "updated_at", void 0);
 exports.Product = Product = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)("product")
 ], Product);

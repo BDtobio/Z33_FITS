@@ -1,39 +1,78 @@
+"use client";
+
 import Image from "next/image";
-import { navConfig, NavItem } from "@/config/NavConfig";
 import Link from "next/link";
+import { navConfig, NavItem } from "@/config/NavConfig";
 import NavbarClient from "../DropDownNav/DropDownNav";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
-  return (
-    <nav className="bg-black shadow-md fixed top-0 w-full z-50">
-      <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between lg:justify-start">
-        <div className="flex items-center text-white text-3xl lg:text-4xl font-semibold">
-          <Link href="/" className="flex items-center space-x-2">
-            <Image
-              src="/images/part11.png"
-              alt="Apple Logo"
-              width={60}
-              height={40}
-              priority
-            />
-          </Link>
-        </div>
+  const { user, logout } = useAuth();
 
-        {/* Enlaces visibles solo en pantallas grandes */}
-        <div className="hidden md:flex flex-1 justify-center space-x-12">
-          {navConfig.map((el: NavItem) => (
-            <div key={`/${el.path}`}>
-              <Link href={el.path}>
-                <span className="relative text-white text-xl group hover:text-red-500">
-                  {el.text}
+  return (
+    <nav className="bg-black/90 backdrop-blur-md shadow-md fixed top-0 w-full z-50 border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        
+        {/* LOGO */}
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/images/part11.png"
+            alt="Logo Z33"
+            width={55}
+            height={55}
+            priority
+            className="hover:scale-110 transition duration-300"
+          />
+        </Link>
+
+        {/* LINKS DESKTOP */}
+        <div className="hidden md:flex flex-1 justify-center space-x-10">
+          {navConfig.map((item: NavItem) => {
+            // 🔥 Ocultar items cuando el user está logueado
+            if (item.auth === "hiddenWhenAuth" && user) return null;
+
+            // 🔥 Mostrar items privados solo si hay user
+            if (item.auth === "private" && !user) return null;
+
+            // 🔥 Admin solo para rol admin
+            if (item.role === "admin" && user?.role !== "admin") return null;
+
+            return (
+              <Link key={item.path} href={item.path}>
+                <span className="relative text-white text-lg group hover:text-red-500 transition">
+                  {item.text}
                   <span className="absolute bottom-0 left-1/2 w-0 h-[2px] bg-red-500 transition-all duration-300 transform -translate-x-1/2 group-hover:w-full"></span>
                 </span>
               </Link>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Menú hamburguesa en pantallas pequeñas */}
+        {/* USER AREA (DESKTOP) */}
+        <div className="hidden md:flex items-center space-x-4 text-white">
+          {!user ? (
+            // 🔥 Si no está logueado → nada acá porque login/register salen del navConfig
+            null
+          ) : (
+            <>
+              <span className="text-gray-300 text-lg">
+                Hola,{" "}
+                <span className="text-red-500 font-semibold">
+                  {user.email.split("@")[0]}
+                </span>
+              </span>
+
+              <button
+                onClick={logout}
+                className="px-4 py-1 bg-red-700 hover:bg-red-800 rounded-md text-lg transition"
+              >
+                Salir
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* MOBILE MENU */}
         <div className="md:hidden">
           <NavbarClient />
         </div>
