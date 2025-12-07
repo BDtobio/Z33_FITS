@@ -1,48 +1,48 @@
-// "use client";
-// import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-// import { IProduct } from "@/interfaces/IProduct";
-// import { getProducts } from "../helpers/getProducts";
+"use client";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { IProduct } from "@/interfaces/IProduct";
 
-// interface ProductContextProps {
-//   products: IProduct[];
-//   loading: boolean;
-//   error: string | null;
-//   refreshProducts: () => void;
-// }
 
-// const ProductContext = createContext<ProductContextProps | undefined>(undefined);
+interface ProductContextProps {
+  products: IProduct[];
+  loading: boolean;
+  error: string | null;
+  refreshProducts: () => void;
+}
 
-// export const ProductProvider = ({ children }: { children: ReactNode }) => {
-//   const [products, setProducts] = useState<IProduct[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
+const ProductContext = createContext<ProductContextProps | undefined>(undefined);
 
-//   const fetchProducts = async () => {
-//     setLoading(true);
-//     setError(null);
-//     try {
-//       const data = await getProducts();
-//       setProducts(data);
-//     } catch {
-//       setError("No se pudieron cargar los productos");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+export const ProductProvider = ({ children }: { children: ReactNode }) => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-//   useEffect(() => {
-//     fetchProducts();
-//   }, []);
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch {
+      setError("No se pudieron cargar los productos");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//   return (
-//     <ProductContext.Provider value={{ products, loading, error, refreshProducts: fetchProducts }}>
-//       {children}
-//     </ProductContext.Provider>
-//   );
-// };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-// export const useProducts = () => {
-//   const context = useContext(ProductContext);
-//   if (!context) throw new Error("useProducts debe usarse dentro de un ProductProvider");
-//   return context;
-// };
+  return (
+    <ProductContext.Provider value={{ products, loading, error, refreshProducts: fetchProducts }}>
+      {children}
+    </ProductContext.Provider>
+  );
+};
+
+export const useProducts = () => {
+  const context = useContext(ProductContext);
+  if (!context) throw new Error("useProducts debe usarse dentro de un ProductProvider");
+  return context;
+};
