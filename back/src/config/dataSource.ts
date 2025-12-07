@@ -7,16 +7,18 @@ console.log("🌐 MODO:", isProd ? "PRODUCCIÓN" : "DESARROLLO");
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL,
+  url: process.env.DATABASE_URL, // Railway DATABASE_URL
 
   entities: isProd
     ? ["dist/entities/*.js"]
     : ["src/entities/*.ts"],
 
-  synchronize: true,
-  // ⚠️ SOLO para pruebas. Borrar después.
-  dropSchema: false,
+  synchronize: true, 
+  dropSchema: false, // NO tocar, no borra tablas
 
-  logging: true,
-  ssl: { rejectUnauthorized: false }
+  logging: false, 
+
+  ssl: isProd
+    ? { rejectUnauthorized: false }
+    : false, 
 });
