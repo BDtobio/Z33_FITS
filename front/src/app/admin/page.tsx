@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
@@ -18,58 +20,55 @@ export default function AdminPanel() {
     loadProducts();
   }, []);
 
-  const deleteProduct = async (id: string) => {
-    if (!confirm("¿Eliminar producto?")) return;
-
-    await fetch(`${API}/products/${id}`, {
-      method: "DELETE",
-    });
-
-    loadProducts();
-  };
-
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Panel de Administración</h1>
+    <div className="p-8 max-w-5xl mx-auto">
+      <h1 className="text-4xl font-bold mb-6">Panel de Administración</h1>
 
-      <a
+      <Link
         href="/admin/new"
-        className="bg-blue-600 text-white px-4 py-2 rounded inline-block mb-6"
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
       >
         ➕ Crear Nueva Prenda
-      </a>
+      </Link>
 
-      <table className="w-full border">
-        <thead>
-          <tr className="bg-gray-100 text-left">
-            <th className="p-2">Nombre</th>
-            <th className="p-2">Precio</th>
-            <th className="p-2">Stock</th>
-            <th className="p-2">Acciones</th>
-          </tr>
-        </thead>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {products.map((p: any) => (
+          <div
+            key={p.id}
+            className="border rounded-lg p-4 shadow bg-white flex flex-col gap-2"
+          >
+            <img 
+  src={p.image_url} 
+  className="w-full h-48 object-cover rounded"
+  alt={p.name}
+/>
 
-        <tbody>
-          {products.map((p: any) => (
-            <tr key={p.id} className="border-b">
-              <td className="p-2">{p.name}</td>
-              <td className="p-2">${p.price}</td>
-              <td className="p-2">{p.stock}</td>
-              <td className="p-2 flex gap-4">
-                <a className="text-blue-600" href={`/admin/edit/${p.id}`}>
-                  Editar
-                </a>
-                <button
-                  className="text-red-600"
-                  onClick={() => deleteProduct(p.id)}
-                >
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+            <h2 className="text-xl font-semibold">{p.name}</h2>
+            <p className="text-gray-600">{p.description}</p>
+            <p className="text-red-600 font-bold text-lg">$ {p.price}</p>
+
+            <div className="flex gap-4 mt-3">
+              <Link
+                href={`/admin/edit/${p.id}`}
+                className="bg-yellow-500 px-4 py-1 rounded text-white hover:bg-yellow-600 transition"
+              >
+                ✏ Editar
+              </Link>
+
+              <button
+                onClick={async () => {
+                  await fetch(`${API}/products/${p.id}`, { method: "DELETE" });
+                  loadProducts();
+                }}
+                className="bg-red-600 px-4 py-1 rounded text-white hover:bg-red-700 transition"
+              >
+                🗑 Borrar
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

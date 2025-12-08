@@ -1,7 +1,18 @@
 "use client";
-import React, { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 const InfoPay: React.FC = () => {
+
+   const router = useRouter();
+  const { isAdmin } = useAuth();
+
+  useEffect(() => {
+    if (isAdmin) router.push("/admin");
+  }, [isAdmin, router]);
+
+
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

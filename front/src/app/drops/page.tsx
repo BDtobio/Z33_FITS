@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IProduct } from '@/interfaces/IProduct';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/router';
 
 // Definir las categorías, ahora solo usaremos sus nombres
 const categories = [
@@ -17,6 +19,14 @@ const categories = [
 
 
 const DropsSection: React.FC = () => {
+
+     const router = useRouter();
+    const { isAdmin } = useAuth();
+  
+    useEffect(() => {
+      if (isAdmin) router.push("/admin");
+    }, [isAdmin, router]);
+
   const [selectedCategory, setSelectedCategory] = useState<string>('Remeras');
   const [clothes, setClothes] = useState<IProduct[]>([]); 
 

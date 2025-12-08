@@ -3,22 +3,25 @@
 export interface NavItem {
   text: string;
   path: string;
-  auth?: "public" | "private" | "hiddenWhenAuth"; 
-  role?: "admin" | "user";
+  auth?: "public" | "private" | "hiddenWhenAuth";
+  role?: "admin" | "user" | "all";
 }
 
 export const navConfig: NavItem[] = [
-  { text: "Home", path: "/home", auth: "public" },
-  { text: "Hombre", path: "/hombre", auth: "public" },
-  { text: "Mujer", path: "/mujer", auth: "public" },
-  { text: "Drops", path: "/drops", auth: "public" },
-  { text: "Contact", path: "/contact", auth: "public" },
-  { text: "InfoPay", path: "/infoPay", auth: "public" },
+  // ==== USUARIO NORMAL ====
+  { text: "Home", path: "/home", auth: "public", role: "user" },
+  { text: "Contact", path: "/contact", auth: "public", role: "user" },
+  { text: "InfoPay", path: "/infoPay", auth: "public", role: "user" },
 
-  // Visible solo si NO está logueado
-  { text: "Iniciar Sesion", path: "/auth/login", auth: "hiddenWhenAuth" },
-  { text: "Crear Cuenta", path: "/auth/register", auth: "hiddenWhenAuth" },
+  // ==== VISTAS QUE USAN ADMIN Y USER ====
+  { text: "Hombre", path: "/hombre", auth: "public", role: "all" },
+  { text: "Mujer", path: "/mujer", auth: "public", role: "all" },
+  { text: "Drops", path: "/drops", auth: "public", role: "all" },
 
-  // Panel Admin solo si user.role === "admin"
+  // ==== LOGIN/REGISTER ====
+  { text: "Iniciar Sesion", path: "/auth/login", auth: "hiddenWhenAuth", role: "user" },
+  { text: "Crear Cuenta", path: "/auth/register", auth: "hiddenWhenAuth", role: "user" },
+
+  // ==== ADMIN PANEL ====
   { text: "Admin", path: "/admin", auth: "private", role: "admin" },
 ];

@@ -22,4 +22,5 @@ export interface IAuthContext {
   register: (data: IRegisterRequest) => Promise<void>;
   logout: () => void;
   loading: boolean;
+  isAdmin: boolean;   // ⭐ AGREGADO
 }

@@ -7,7 +7,7 @@ import NavbarClient from "../DropDownNav/DropDownNav";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
 
   return (
     <nav className="bg-black/90 backdrop-blur-md shadow-md fixed top-0 w-full z-50 border-b border-white/10">
@@ -28,14 +28,22 @@ export default function Navbar() {
         {/* LINKS DESKTOP */}
         <div className="hidden md:flex flex-1 justify-center space-x-10">
           {navConfig.map((item: NavItem) => {
-            // 🔥 Ocultar items cuando el user está logueado
-            if (item.auth === "hiddenWhenAuth" && user) return null;
 
-            // 🔥 Mostrar items privados solo si hay user
-            if (item.auth === "private" && !user) return null;
+            // 🔥 ADMIN: solo ver items role:"admin" o role:"all"
+            if (isAdmin) {
+              if (item.role !== "admin" && item.role !== "all") return null;
+            }
 
-            // 🔥 Admin solo para rol admin
-            if (item.role === "admin" && user?.role !== "admin") return null;
+            // 🔥 USUARIO NORMAL: ocultar items solo admin
+            if (!isAdmin && user) {
+              if (item.role === "admin") return null;
+            }
+
+            // 🔥 INVITADO: no mostrar items privados
+            if (!user && !isAdmin && item.auth === "private") return null;
+
+            // 🔥 Ocultar login/register si hay auth (user o admin)
+            if (item.auth === "hiddenWhenAuth" && (user || isAdmin)) return null;
 
             return (
               <Link key={item.path} href={item.path}>
@@ -50,15 +58,14 @@ export default function Navbar() {
 
         {/* USER AREA (DESKTOP) */}
         <div className="hidden md:flex items-center space-x-4 text-white">
-          {!user ? (
-            // 🔥 Si no está logueado → nada acá porque login/register salen del navConfig
+          {!user && !isAdmin ? (
             null
           ) : (
             <>
               <span className="text-gray-300 text-lg">
                 Hola,{" "}
                 <span className="text-red-500 font-semibold">
-                  {user.email.split("@")[0]}
+                  {isAdmin ? "Admin" : user?.email.split("@")[0]}
                 </span>
               </span>
 

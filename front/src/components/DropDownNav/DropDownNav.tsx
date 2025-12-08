@@ -3,9 +3,32 @@
 import { useState } from "react";
 import { navConfig, NavItem } from "@/config/NavConfig";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 export default function NavbarClient() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAdmin } = useAuth(); // ⭐ AHORA LEEMOS AUTH
+
+  // Filtrado igual que en navbar desktop
+  const filteredNav = navConfig.filter((item: NavItem) => {
+    // ADMIN solo ve role:"admin" o role:"all"
+    if (isAdmin) {
+      if (item.role !== "admin" && item.role !== "all") return false;
+    }
+
+    // USUARIO NORMAL oculta lo exclusivo del admin
+    if (!isAdmin && user) {
+      if (item.role === "admin") return false;
+    }
+
+    // INVITADO: ocultar rutas privadas
+    if (!user && !isAdmin && item.auth === "private") return false;
+
+    // Ocultar login/register si hay auth
+    if (item.auth === "hiddenWhenAuth" && (user || isAdmin)) return false;
+
+    return true;
+  });
 
   return (
     <>
@@ -37,16 +60,18 @@ export default function NavbarClient() {
       {isMenuOpen && (
         <div className="absolute top-16 left-0 w-full bg-black text-white shadow-md z-40">
           <div className="flex flex-col items-center space-y-4 py-4">
-            {navConfig.map((el: NavItem) => (
+
+            {filteredNav.map((item: NavItem) => (
               <Link
-                key={`/${el.path}`}
-                href={el.path}
-                onClick={() => setIsMenuOpen(false)} // Cierra el menú al hacer clic
-                className="text-lg hover:text-red-500"
+                key={item.path}
+                href={item.path}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-lg hover:text-red-500 transition"
               >
-                {el.text}
+                {item.text}
               </Link>
             ))}
+
           </div>
         </div>
       )}

@@ -12,22 +12,24 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3002";
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
-  /* -------------------------------
+  /* -----------------------------------------
       CARGAR SESIÓN DESDE LOCALSTORAGE
-  --------------------------------*/
+  -----------------------------------------*/
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     const savedUser = localStorage.getItem("user");
+    const savedAdmin = localStorage.getItem("admin");
 
     if (savedToken) setToken(savedToken);
+    if (savedAdmin === "true") setIsAdmin(true);
 
     if (savedUser && savedUser !== "undefined") {
       try {
         setUser(JSON.parse(savedUser));
       } catch {
-        console.error("Error parsing saved user");
         localStorage.removeItem("user");
       }
     }
@@ -35,17 +37,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
-  /* -------------------------------
+  /* -----------------------------------------
                   LOGIN
-  --------------------------------*/
-  const login = async (credentials: ILoginRequest) => {
-    const { email, password } = credentials;
-
+  -----------------------------------------*/
+  const login = async ({ email, password }: ILoginRequest) => {
     const { data } = await axios.post(`${API_URL}/auth/login`, {
       email,
       password,
     });
 
+    // ⭐ ADMIN LOGIN
+    if (data.isAdmin) {
+      localStorage.setItem("admin", "true");
+      localStorage.setItem("token", data.token);
+
+      setIsAdmin(true);
+      setToken(data.token);
+      setUser(null); // Admin no tiene user
+      
+      return;
+    }
+
+    // ⭐ USUARIO NORMAL
     setUser(data.user);
     setToken(data.token);
 
@@ -53,27 +66,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("token", data.token);
   };
 
-  /* -------------------------------
+  /* -----------------------------------------
                 REGISTER
-  --------------------------------*/
+  -----------------------------------------*/
   const register = async (dataRegister: IRegisterRequest) => {
- const { data } = await axios.post(`${API_URL}/auth/register`, dataRegister);
-
-console.log("Usuario registrado:", data);
-
-
-    // NO logueamos automáticamente — solo redirigimos
-    // Si querés auto-login, avisá y lo agregamos
+    await axios.post(`${API_URL}/auth/register`, dataRegister);
   };
 
-  /* -------------------------------
+  /* -----------------------------------------
                 LOGOUT
-  --------------------------------*/
+  -----------------------------------------*/
   const logout = () => {
     setUser(null);
     setToken(null);
+    setIsAdmin(false);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("admin");
   };
 
   return (
@@ -85,6 +94,7 @@ console.log("Usuario registrado:", data);
         register,
         logout,
         loading,
+        isAdmin, // ⭐ IMPORTANTE
       }}
     >
       {children}
@@ -92,9 +102,6 @@ console.log("Usuario registrado:", data);
   );
 };
 
-/* -------------------------------
-        CUSTOM HOOK
---------------------------------*/
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context)

@@ -7,17 +7,22 @@ import { IProduct } from "@/interfaces/IProduct";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3002";
 
-// ⚠️ Reemplazar por el ID real de "Hombre" que tengas en tu BD
-const GENDER_ID = "ID_GENERO_HOMBRE";
-
 export default function HombrePage() {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await axios.get(`${API_URL}/products/gender/${GENDER_ID}`);
-      setProducts(data);
+      const { data } = await axios.get(`${API_URL}/products`);
+
+      // Filtrar SOLO productos donde el género sea Hombre
+      const filtered = data.filter(
+        (p: IProduct) =>
+          p.gender?.name?.toLowerCase() === "hombre"
+      );
+
+      setProducts(filtered);
     };
+
     fetchProducts();
   }, []);
 
@@ -31,7 +36,7 @@ export default function HombrePage() {
             key={p.id}
             className="border p-4 rounded-lg shadow hover:shadow-md transition bg-white"
           >
-            {/* Imagen con Next/Image */}
+            {/* Imagen */}
             <div className="relative w-full h-64 mb-4 rounded-lg overflow-hidden">
               <Image
                 src={p.image_url}

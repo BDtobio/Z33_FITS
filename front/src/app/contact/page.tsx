@@ -1,8 +1,18 @@
 "use client";
+import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image'; // Para cargar imágenes
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 const Contact = () => {
+
+     const router = useRouter();
+    const { isAdmin } = useAuth();
+  
+    useEffect(() => {
+      if (isAdmin) router.push("/admin");
+    }, [isAdmin, router]);
+
   const [message, setMessage] = useState('');
 
   useEffect(() => {
